@@ -53,13 +53,71 @@
 <span class="rrb-footer">Source : rrb.nc · Résultats provisoires du 28 juin 2026</span>
 </div>
 <script>
-var PROVINCES_VISIBLES={sud:true,nord:true,iles:true};
-var VOIX_DATA={
-  'sud':{'Kanaky pour tous':2500,'Unis pour le pays':4000,'Souveraineté Kanaky NC':900,'Faire Pays':1200,'Un autre monde est possible !':300,'Une province pour tous':500,'Nous, Réunis !':10200,'Un espoir pour demain':7300,'Les Loyalistes et le Rassemblement':24500,'France-Calédonie : une patrie':2800,'Pour une Calédonie française':4100},
-  'nord':{'UC-FLNKS':8200,'UNI':6100,'Alternative Nord pour un pays souverain':3900,'Faire Pays':1800,'Agissons ensemble pour le Nord':1600},
-  'iles':{'UC-FLNKS Îles':4200,'PALIKA Îles':2800,'Nation Autochtone':1500,'Union pour construire dans le consensus':800,"S'engager et oeuvrer pour la prospérité":500,'Baselaia':200,'Un nouveau souffle':0}
+var PROVINCES_VISIBLES={sud:false,nord:false,iles:false};
+var SIEGES_OVERRIDE={
+  'sud':{
+    'Les Loyalistes et le Rassemblement': 0,
+    'Nous, Réunis !': 0,
+    'Un espoir pour demain': 0,
+    'Pour une Calédonie française': 0,
+    'Unis pour le pays': 0,
+    'France-Calédonie : une patrie': 0,
+    'Kanaky pour tous': 0,
+    'Faire Pays': 0,
+    'Souveraineté Kanaky NC': 0,
+    'Une province pour tous': 0,
+    'Un autre monde est possible !': 0
+  },
+  'nord':{
+    'UC-FLNKS': 0,
+    'UNI': 0,
+    'Alternative Nord pour un pays souverain': 0,
+    'Faire Pays': 0,
+    'Agissons ensemble pour le Nord': 0
+  },
+  'iles':{
+    'UC-FLNKS Îles': 0,
+    'PALIKA Îles': 0,
+    'Nation Autochtone': 0,
+    'Union pour construire dans le consensus': 0,
+    'S'engager et oeuvrer pour la prospérité': 0,
+    'Baselaia': 0,
+    'Un nouveau souffle': 0
+  }
 };
-var PARTICIPATION={sud:0.0,nord:0.0,iles:0.0};
+var VOIX_DATA={
+  'sud':{
+    'Les Loyalistes et le Rassemblement': 0,
+    'Nous, Réunis !': 0,
+    'Un espoir pour demain': 0,
+    'Pour une Calédonie française': 0,
+    'Unis pour le pays': 0,
+    'France-Calédonie : une patrie': 0,
+    'Kanaky pour tous': 0,
+    'Faire Pays': 0,
+    'Souveraineté Kanaky NC': 0,
+    'Une province pour tous': 0,
+    'Un autre monde est possible !': 0
+  },
+  'nord':{
+    'UC-FLNKS': 0,
+    'UNI': 0,
+    'Alternative Nord pour un pays souverain': 0,
+    'Faire Pays': 0,
+    'Agissons ensemble pour le Nord': 0
+  },
+  'iles':{
+    'UC-FLNKS Îles': 0,
+    'PALIKA Îles': 0,
+    'Nation Autochtone': 0,
+    'Union pour construire dans le consensus': 0,
+    'S'engager et oeuvrer pour la prospérité': 0,
+    'Baselaia': 0,
+    'Un nouveau souffle': 0
+  }
+};
+
+var PARTICIPATION={"sud":0,"nord":0,"iles":0};
 function showElu(elu,groupe,col){
   var ib=document.getElementById('ib_c'),it1=document.getElementById('it1_c'),it2=document.getElementById('it2_c');
   if(!ib)return;
