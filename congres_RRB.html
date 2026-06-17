@@ -54,7 +54,7 @@
     </div>
     <a href="https://www.rrb.nc/articles?thematique=77" target="_blank" class="rrb-articles-btn">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v5h5M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2Z"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
-      <span>Nos articles provinciales</span>
+      <span>Nos articles "Provinciales 2026"</span>
     </a>
   </div>
   <div class="rrb-wrap">
@@ -67,80 +67,14 @@
 
 <script>
 // ═══ CONFIG — mise à jour par l'interface de saisie ═══
-var PROVINCES_VISIBLES={sud:true,nord:false,iles:true};
-var PARTICIPATION={"sud":67.2998400686186,"nord":0,"iles":64.80194893079491};
-var EXPRIMES={sud:73235,nord:0,iles:13852};
-var SIEGES_OVERRIDE={
-  'sud':{
-    'Les Loyalistes et le Rassemblement': 17,
-    'Nous, Réunis !': 9,
-    'Un espoir pour demain': 7,
-    'Pour une Calédonie française': 0,
-    'Unis pour le pays': 7,
-    'France-Calédonie : une patrie': 0,
-    'Kanaky pour tous': 0,
-    'Faire Pays': 0,
-    'Souveraineté Kanaky NC': 0,
-    'Une province pour tous': 0,
-    'Un autre monde est possible !': 0
-  },
-  'nord':{
-    'UC-FLNKS': 0,
-    'UNI': 0,
-    'Alternative Nord pour un pays souverain': 0,
-    'Faire Pays': 0,
-    'Agissons ensemble pour le Nord': 0
-  },
-  'iles':{
-    'UC-FLNKS Îles': 4,
-    'PALIKA Îles': 3,
-    'Nation Autochtone': 2,
-    'Union pour construire dans le consensus': 1,
-    'S\'engager et oeuvrer pour la prospérité': 2,
-    'Baselaia': 1,
-    'Un nouveau souffle': 1
-  }
-};
-
-
-
-
+var PROVINCES_VISIBLES={sud:false,nord:false,iles:false};
+var PARTICIPATION={sud:0.0,nord:0.0,iles:0.0};
+var EXPRIMES={sud:0,nord:0,iles:0};
 var VOIX_DATA={
-  'sud':{
-    'Les Loyalistes et le Rassemblement': 22750,
-    'Nous, Réunis !': 12658,
-    'Un espoir pour demain': 9356,
-    'Pour une Calédonie française': 5395,
-    'Unis pour le pays': 10437,
-    'France-Calédonie : une patrie': 3415,
-    'Kanaky pour tous': 2931,
-    'Faire Pays': 1349,
-    'Souveraineté Kanaky NC': 2108,
-    'Une province pour tous': 1490,
-    'Un autre monde est possible !': 1346
-  },
-  'nord':{
-    'UC-FLNKS': 0,
-    'UNI': 0,
-    'Alternative Nord pour un pays souverain': 0,
-    'Faire Pays': 0,
-    'Agissons ensemble pour le Nord': 0
-  },
-  'iles':{
-    'UC-FLNKS Îles': 3873,
-    'PALIKA Îles': 2927,
-    'Nation Autochtone': 1559,
-    'Union pour construire dans le consensus': 1382,
-    'S\'engager et oeuvrer pour la prospérité': 1575,
-    'Baselaia': 1314,
-    'Un nouveau souffle': 1222
-  }
+  'sud':{'Les Loyalistes et le Rassemblement':0,'Nous, Réunis !':0,'Un espoir pour demain':0,'Pour une Calédonie française':0,'Unis pour le pays':0,'France-Calédonie : une patrie':0,'Kanaky pour tous':0,'Faire Pays':0,'Souveraineté Kanaky NC':0,'Une province pour tous':0,'Un autre monde est possible !':0},
+  'nord':{'UC-FLNKS':0,'UNI':0,'Alternative Nord pour un pays souverain':0,'Faire Pays':0,'Agissons ensemble pour le Nord':0},
+  'iles':{'UC-FLNKS Îles':0,'PALIKA Îles':0,'Nation Autochtone':0,'Union pour construire dans le consensus':0,"S'engager et oeuvrer pour la prospérité":0,'Baselaia':0,'Un nouveau souffle':0}
 };
-
-
-
-
-
 
 // ═══ DONNÉES STATIQUES ═══
 var INSCRITS={sud:111923,nord:41983,iles:22166};
@@ -154,19 +88,35 @@ var COULEURS={
 };
 
 // Groupes politiques au Congrès — triés par ordre d'importance attendu
+// Classification politique pour l'ordre gauche → centre → droite dans l'hémicycle
+// ORIENTATION: 'indep' (indépendantiste, gauche), 'centre' (Nous Réunis, centre-droit), 'loyaliste' (droite)
 var GROUPES=[
-  {nom:'Loyalistes et le Rassemblement', couleur:'#1a4dbf', membres:[['sud','Les Loyalistes et le Rassemblement'],['nord','Agissons ensemble pour le Nord'],['iles','Un nouveau souffle']]},
-  {nom:'UC-FLNKS', couleur:'#e82020', membres:[['sud','Kanaky pour tous'],['nord','UC-FLNKS'],['iles','UC-FLNKS Îles']]},
-  {nom:'Nous, Réunis !', couleur:'#3498db', membres:[['sud','Nous, Réunis !']]},
-  {nom:'UNI – PALIKA', couleur:'#1a9e4a', membres:[['sud','Unis pour le pays'],['nord','UNI'],['iles','PALIKA Îles']]},
-  {nom:'Un espoir pour demain', couleur:'#9b59b6', membres:[['sud','Un espoir pour demain']]},
-  {nom:'Alternative Nord', couleur:'#6e6eaa', membres:[['nord','Alternative Nord pour un pays souverain']]},
-  {nom:'Nation Autochtone', couleur:'#ff6a00', membres:[['iles','Nation Autochtone']]}
+  // ═══ BLOC INDÉPENDANTISTE (gauche) ═══
+  {nom:'UC-FLNKS', couleur:'#e82020', orientation:'indep', membres:[['sud','Kanaky pour tous'],['nord','UC-FLNKS'],['iles','UC-FLNKS Îles']]},
+  {nom:'UNI – PALIKA', couleur:'#1a9e4a', orientation:'indep', membres:[['sud','Unis pour le pays'],['nord','UNI'],['iles','PALIKA Îles']]},
+  {nom:'Souveraineté Kanaky NC', couleur:'#ff6a00', orientation:'indep', membres:[['sud','Souveraineté Kanaky NC']]},
+  {nom:'Faire Pays', couleur:'#6e6eaa', orientation:'indep', membres:[['sud','Faire Pays'],['nord','Faire Pays']]},
+  {nom:'Alternative Nord', couleur:'#8e7cc3', orientation:'indep', membres:[['nord','Alternative Nord pour un pays souverain']]},
+  {nom:'Nation Autochtone', couleur:'#d4a017', orientation:'indep', membres:[['iles','Nation Autochtone']]},
+  {nom:'Union pour le consensus', couleur:'#a0522d', orientation:'indep', membres:[['iles','Union pour construire dans le consensus']]},
+  {nom:"S'engager et oeuvrer", couleur:'#b8860b', orientation:'indep', membres:[['iles',"S'engager et oeuvrer pour la prospérité"]]},
+  {nom:'Baselaia', couleur:'#cd5c5c', orientation:'indep', membres:[['iles','Baselaia']]},
+
+  // ═══ CENTRE (centre-droit) ═══
+  {nom:'Nous, Réunis !', couleur:'#3498db', orientation:'centre', membres:[['sud','Nous, Réunis !']]},
+
+  // ═══ BLOC LOYALISTE (droite) ═══
+  {nom:'Éveil océanien', couleur:'#16a085', orientation:'loyaliste', membres:[['sud','Un autre monde est possible !']]},
+  {nom:'Une province pour tous', couleur:'#aaaa00', orientation:'loyaliste', membres:[['sud','Une province pour tous']]},
+  {nom:'Un espoir pour demain', couleur:'#9b59b6', orientation:'loyaliste', membres:[['sud','Un espoir pour demain']]},
+  {nom:'France-Calédonie : une patrie', couleur:'#c0392b', orientation:'loyaliste', membres:[['sud','France-Calédonie : une patrie']]},
+  {nom:'Pour une Calédonie française', couleur:'#0099cc', orientation:'loyaliste', membres:[['sud','Pour une Calédonie française']]},
+  {nom:'Loyalistes et le Rassemblement', couleur:'#1a4dbf', orientation:'loyaliste', membres:[['sud','Les Loyalistes et le Rassemblement'],['nord','Agissons ensemble pour le Nord'],['iles','Un nouveau souffle']]},
 ];
 
 var CANDS_CONG={
   'Loyalistes et le Rassemblement':{
-    sud:["BACKES Sonia","METZDORF Nicolas","RUFFENACH Virginie","BRIAL Gil","UKEIWE Marie-Laure","PAAGALUA Lionel Claude","JULIÉ Nina","VITTORI Pascal","TRAN épouse BUI-DUYET Amandine","GYGES Christopher","JAN Cynthia","BASSET-CREUGNET Loïc","WATEOU Naïa","FROGIER Brieuc Nahea","VENDEGOU Laura","NORMANDON Cael","WAMEDJO Guylène","COURTOT Jordan","BARBIER Marie-Jo"],
+    sud:["BACKES Sonia","METZDORF Nicolas","RUFFENACH Virginie","BRIAL Gil","UKEIWE Marie-Laure","PAAGALUA Lionel Claude","JULIÉ Nina","VITTORI Pascal","TRAN épouse BUI-DUYET Amandine","GYGES Christopher","JAN Cynthia","BASSET-CREUGNET Loïc","WATEOU Naïa","FROGIER Brieuc","VENDEGOU Laura","NORMANDON Cael","WAMEDJO Guylène","COURTOT Jordan","BARBIER Marie-Jo"],
     nord:["WACAPO Vanessa"],
     iles:["TRENYIWA Karyl"]
   },
@@ -191,6 +141,34 @@ var CANDS_CONG={
   },
   'Nation Autochtone':{
     iles:["NAISSELINE Omayra Meun","CITRE Basile Cici"]
+  },
+  'Souveraineté Kanaky NC':{
+    sud:["CHAZAL Dominique Alain Michel","ROKUAD Edmonde Ako Tupoue Annie"]
+  },
+  'Faire Pays':{
+    sud:["KAKUE Robert","LEQUATRE Marie-Madeleine"],
+    nord:["WAKA-AWA Maurice"]
+  },
+  'Éveil océanien':{
+    sud:["TUKUMULI Milakulo","FALAEO Veylma"]
+  },
+  'Une province pour tous':{
+    sud:["KOTRA Walles","LACROSE Angélina"]
+  },
+  'France-Calédonie : une patrie':{
+    sud:["DESCOMBELS Alain","HOANG Elena"]
+  },
+  'Pour une Calédonie française':{
+    sud:["LEQUES Arnold","HENIN Bianca"]
+  },
+  'Union pour le consensus':{
+    iles:["LALIE Jacques Zanehno"]
+  },
+  "S'engager et oeuvrer":{
+    iles:["PIDRA Joann Xenie"]
+  },
+  'Baselaia':{
+    iles:[]
   }
 };
 
@@ -214,9 +192,10 @@ function calcCongres(prov){
 function invNom(nom){
   var p=nom.trim().split(' ');if(p.length<=1)return nom;
   var ps=p.length;
+  var deaccent=function(s){return s.replace(/[éèêë]/g,'e').replace(/[ÉÈÊË]/g,'E').replace(/[àâ]/g,'a').replace(/[ÀÂ]/g,'A').replace(/[îï]/g,'i').replace(/[ÎÏ]/g,'I').replace(/[ôû]/g,'o').replace(/[ÔÛ]/g,'O').replace(/ù/g,'u').replace(/Ù/g,'U').replace(/ü/g,'u').replace(/Ü/g,'U').replace(/ç/g,'c').replace(/Ç/g,'C').replace(/ñ/g,'n').replace(/Ñ/g,'N');};
   for(var i=p.length-1;i>=0;i--){
-    var w=p[i],wc=w.replace(/[éèêëàùîâôûïÉÈÊËÀÙÎÂÔÛÏ]/g,'e').replace(/-/g,'').replace(/'/g,'');
-    var up=wc===wc.toUpperCase()&&wc.length>1&&/^[A-Za-z]+$/.test(wc);
+    var w=p[i],wc=deaccent(w).replace(/-/g,'').replace(/'/g,'');
+    var up=wc.length>1&&/^[A-Za-z]+$/.test(wc)&&wc===wc.toUpperCase();
     var ab=wc.replace('.','').length<=3&&w[0]===w[0].toUpperCase();
     if(up||ab){ps=i+1;break;}else if(w[0]===w[0].toUpperCase()){ps=i;}else{ps=i+1;break;}
   }
