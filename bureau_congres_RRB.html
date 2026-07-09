@@ -175,7 +175,7 @@ var LOGO_RRB="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAggAAAEaCAMAAABD1F9c
 var CONGRES = {
   meta: { date:"vendredi 10 juillet 2026", quorum:"3/5 (33 conseillers)", credit:"" },
 
-  president: { nom:"Virginie RUFFENACH", genre:"F", groupe:"Le Rassemblement", couleur:"#5c8ee0", photo:null, voix:null, total:54 },
+  president: { nom:"", genre:"", groupe:"", couleur:"", photo:null, voix:null, total:54 },
 
   bureau: {
     vps: [
@@ -279,7 +279,6 @@ function renderBureau(){
     +'<div class="role">'+presRole(p.genre)+'</div>'
     +'<div class="nom">'+(p.nom?esc(p.nom):'<span class="todo-inline">\u00e0 \u00e9lire</span>')+'</div>'
     +pill(p)
-    +((p.voix!=null)?('<div class="stat">\u00c9lu\u00b7e avec <b>'+p.voix+'</b> voix sur <b>'+(p.total||54)+'</b></div>'):'')
     +'</div>';
 
   var vps=CONGRES.bureau.vps.map(function(v,i){return slot(v,vpRole(i,v.genre),'sm');}).join('');
