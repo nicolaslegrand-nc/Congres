@@ -217,7 +217,7 @@ function utf8FromB64(b){return decodeURIComponent(escape(atob((b||'').replace(/\
 function P(){return {nom:'',genre:'',affil:'',photo:null};}
 function initModel(){return {
   meta:{date:'vendredi 10 juillet 2026',credit:''},
-  president:{nom:'Virginie RUFFENACH',genre:'F',affil:'Le Rassemblement',photo:null,voix:'',total:54},
+  president:{nom:'',genre:'',affil:'',photo:null,voix:'',total:54},
   bureau:{vps:[P(),P(),P(),P(),P(),P(),P(),P()],secretaires:[P(),P()],questeurs:[P(),P()]},
   commission:{president:P(),vice:P(),secretaire:P(),membres:[P(),P(),P(),P(),P(),P(),P(),P()]},
   groupes:[
@@ -781,7 +781,7 @@ function drawBureauCard(IM){
     _med(ctx,gx,gy+r,r,V[i],IM['v'+i]);
     ctx.fillStyle='#7183a4';ctx.font='800 15px "Segoe UI",Arial';ctx.textAlign='center';
     ctx.fillText((vpRole(i,V[i].genre)||'').toUpperCase(),gx,gy+2*r+24);
-    ctx.fillStyle='#33456b';ctx.font='700 20px "Segoe UI",Arial';_wrap(ctx,V[i].nom||'à désigner',gx,gy+2*r+50,colW-16,24,2);
+    ctx.fillStyle='#33456b';ctx.font='700 20px "Segoe UI",Arial';_wrap(ctx,V[i].nom||'à élire',gx,gy+2*r+50,colW-16,24,2);
   }
   py+=Math.ceil(n/cols)*172+18;
   _lab(ctx,midX,py,'SECRÉTAIRES & QUESTEURS');py+=42;
@@ -793,7 +793,7 @@ function drawBureauCard(IM){
     _med(ctx,sx,py+rr,rr,SQ[j].v,IM[SQ[j].k]);
     ctx.fillStyle='#7183a4';ctx.font='800 14px "Segoe UI",Arial';ctx.textAlign='center';
     ctx.fillText((SQ[j].role||'').toUpperCase(),sx,py+2*rr+22);
-    ctx.fillStyle='#33456b';ctx.font='700 18px "Segoe UI",Arial';_wrap(ctx,SQ[j].v.nom||'à désigner',sx,py+2*rr+46,sw-12,22,2);
+    ctx.fillStyle='#33456b';ctx.font='700 18px "Segoe UI",Arial';_wrap(ctx,SQ[j].v.nom||'à élire',sx,py+2*rr+46,sw-12,22,2);
   }
   // pied
   _footer(ctx,W,H);
@@ -840,7 +840,7 @@ function drawGroupesCard(IM){
     _med(ctx,cx0+52,ry+30,30,per,im);
     ctx.textAlign='left';ctx.fillStyle='#1a2a4a';ctx.font='800 27px "Segoe UI",Arial';ctx.fillText(gr.nom,cx0+100,ry+22);
     ctx.fillStyle='#5a6b8c';ctx.font='600 20px "Segoe UI",Arial';
-    var sub=gr.__hors?'Hors groupe (non-inscrit)':((gr.president&&gr.president.nom)?('Chef de groupe : '+gr.president.nom):'Chef de groupe à désigner');
+    var sub=gr.__hors?'Hors groupe (non-inscrit)':((gr.president&&gr.president.nom)?('Chef de groupe : '+gr.president.nom):'Chef de groupe à élire');
     ctx.fillText(sub,cx0+100,ry+52);
     ctx.textAlign='right';ctx.fillStyle=gr.couleur;ctx.font='900 32px "Segoe UI",Arial';ctx.fillText((gr.sieges||0)+' élus',cx0+cw-34,ry+38);
     ry+=78;
@@ -858,13 +858,13 @@ function drawCommissionCard(IM){
   var oy=cy0+46,ocw=cw/3,r=64;
   off.forEach(function(x,i){var ox=cx0+ocw*i+ocw/2;_med(ctx,ox,oy+r,r,x.o,(x.o&&x.o.photo)?IM[x.o.photo]:null);
     ctx.textAlign='center';ctx.fillStyle='#1a4dbf';ctx.font='800 17px "Segoe UI",Arial';ctx.fillText(x.r,ox,oy+2*r+26);
-    ctx.fillStyle='#1a2a4a';ctx.font='800 22px "Segoe UI",Arial';_wrap(ctx,(x.o&&x.o.nom)||'à désigner',ox,oy+2*r+52,ocw-16,24,2);});
+    ctx.fillStyle='#1a2a4a';ctx.font='800 22px "Segoe UI",Arial';_wrap(ctx,(x.o&&x.o.nom)||'à élire',ox,oy+2*r+52,ocw-16,24,2);});
   var py=oy+2*r+112;_lab(ctx,W/2,py,'MEMBRES');py+=42;
   var M=cm.membres||[],n=M.length,cols=Math.min(4,n||1),colW=cw/cols,rr=48;
   for(var i=0;i<n;i++){var gx=cx0+colW*(i%cols)+colW/2,gy=py+Math.floor(i/cols)*166;
     _med(ctx,gx,gy+rr,rr,M[i],(M[i]&&M[i].photo)?IM[M[i].photo]:null);
     ctx.fillStyle='#7183a4';ctx.font='800 15px "Segoe UI",Arial';ctx.textAlign='center';ctx.fillText('MEMBRE',gx,gy+2*rr+24);
-    ctx.fillStyle='#33456b';ctx.font='700 19px "Segoe UI",Arial';_wrap(ctx,M[i].nom||'à désigner',gx,gy+2*rr+48,colW-16,22,2);}
+    ctx.fillStyle='#33456b';ctx.font='700 19px "Segoe UI",Arial';_wrap(ctx,M[i].nom||'à élire',gx,gy+2*rr+48,colW-16,22,2);}
   _footer(ctx,W,H);
   return c.toDataURL('image/png');
 }

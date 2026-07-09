@@ -268,7 +268,7 @@ function slot(person,role,cls,wrap){
   var ph=person.photo?' has-photo':'';
   return '<div class="person'+(wrap?' '+wrap:'')+ph+'">'+medaillon(person,cls)
     +'<div class="role">'+role+'</div>'
-    +'<div class="nom">'+(person.nom?esc(person.nom):'<span class="todo-inline">\u00e0 d\u00e9signer</span>')+'</div>'
+    +'<div class="nom">'+(person.nom?esc(person.nom):'<span class="todo-inline">\u00e0 \u00e9lire</span>')+'</div>'
     +pill(person)+'</div>';
 }
 
@@ -318,7 +318,7 @@ function grpEntry(g){
   var hasElus=!!(g.membres&&g.membres.length);
   var body='<div class="grp-body">'
     +'<div class="grp-role">'+role+'</div>'
-    +'<div class="grp-nom">'+(p.nom?esc(p.nom):'<span class="todo-inline">\u00e0 d\u00e9signer</span>')+'</div>'
+    +'<div class="grp-nom">'+(p.nom?esc(p.nom):'<span class="todo-inline">\u00e0 \u00e9lire</span>')+'</div>'
     +'<div class="grp-aff"><span class="pill" style="background:'+g.couleur+'">'+esc(g.nom)+'</span>'
     +(g.sieges!=null?'<span class="grp-seats">'+g.sieges+' \u00e9lus</span>':'')+'</div>'
     +'</div>';
@@ -468,7 +468,7 @@ function congPanelHTML(g){
   var med=g.__hors?medaillon({couleur:g.couleur,nom:g.nom},'grp'):medaillon({couleur:g.couleur,photo:p.photo,nom:p.nom},'grp');
   var chefLine=g.__hors
     ?'<div class="cp-line"><span class="cp-lab">Statut</span> <b>Hors groupe</b></div>'
-    :'<div class="cp-line"><span class="cp-lab">Chef de groupe</span> '+(p.nom?('<b>'+esc(p.nom)+'</b>'):'<span class="todo-inline">\u00e0 d\u00e9signer</span>')+'</div>';
+    :'<div class="cp-line"><span class="cp-lab">Chef de groupe</span> '+(p.nom?('<b>'+esc(p.nom)+'</b>'):'<span class="todo-inline">\u00e0 \u00e9lire</span>')+'</div>';
   var elus='';
   if(g.membres&&g.membres.length){
     var ms=g.membres.slice().sort(function(a,b){return surnameKey(a.nom).localeCompare(surnameKey(b.nom),'fr');});
@@ -542,7 +542,7 @@ function commissionSeatSpecs(){
     .concat((c.membres||[]).map(function(m){return {p:m,r:'Membre'};}));
   var specs=people.filter(function(x){return x.p;}).map(function(x){
     return {col:x.p.couleur||'#c9d3e6',groupe:x.p.groupe||'',
-      title:(x.p.nom?esc(x.p.nom):'\u00e0 d\u00e9signer')+(x.p.groupe?(' \u2014 '+esc(x.p.groupe)):'')+' ('+x.r+')'};
+      title:(x.p.nom?esc(x.p.nom):'\u00e0 \u00e9lire')+(x.p.groupe?(' \u2014 '+esc(x.p.groupe)):'')+' ('+x.r+')'};
   });
   specs.sort(function(a,b){var oa=(order[a.groupe]==null?200:order[a.groupe]),ob=(order[b.groupe]==null?200:order[b.groupe]);return oa-ob;});
   return specs;
