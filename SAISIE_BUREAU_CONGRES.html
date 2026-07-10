@@ -314,11 +314,12 @@ function _acShow(input){
   var matches=getAllElus().filter(function(n){return acMatch(n,q);}).slice(0,12);
   if(!matches.length){_acHide();return;}
   dd.innerHTML=matches.map(function(n){return '<div class="ac-item" data-nom="'+attr(n)+'">'+esc(n)+'</div>';}).join('');
-  var r=input.getBoundingClientRect();
-  dd.style.left=(r.left+window.scrollX)+'px';
-  dd.style.top=(r.bottom+window.scrollY+2)+'px';
-  dd.style.minWidth=r.width+'px';
   dd.style.display='block';
+  var r=input.getBoundingClientRect(),ddH=dd.offsetHeight,vh=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;
+  dd.style.left=(r.left+window.scrollX)+'px';
+  dd.style.minWidth=r.width+'px';
+  if(r.bottom+ddH+8<=vh)dd.style.top=(r.bottom+window.scrollY+2)+'px';       /* place en dessous */
+  else dd.style.top=(Math.max(4,r.top-ddH-2)+window.scrollY)+'px';           /* sinon au-dessus (clavier mobile) */
   _acInput=input;
 }
 function _acHide(){if(_acDD)_acDD.style.display='none';_acInput=null;}
